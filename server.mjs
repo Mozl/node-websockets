@@ -40,10 +40,10 @@ const store = [
 wss.on("connection", function connection(ws) {
   ws.id = uuid();
   console.log("client connected");
-  store.forEach((obj) => ws.send(obj));
+  store.forEach((obj) => ws.send(obj.toString("utf8")));
 
   ws.on("message", function message(info, isBinary) {
-    store.push(info.toString("utf8"));
+    store.push(info);
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         console.log("sending to clients: ", info.toString("utf8"));
