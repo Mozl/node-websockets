@@ -5,7 +5,7 @@ import path from "path";
 
 const __dirname = path.resolve();
 
-const PORT = proceess.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 const INDEX = "/index.html";
 
 console.log("before express.use()");
