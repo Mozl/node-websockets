@@ -16,26 +16,7 @@ const server = express()
 
 const wss = new WebSocketServer({ server });
 
-const store = [
-  {
-    x: -1,
-    y: -1.600000023841858,
-    z: -5.838443756103516,
-    id: "b50ac17a-6ea3-4914-8e2a-19b2c32ccb8d",
-  },
-  {
-    x: 0,
-    y: -1.600000023841858,
-    z: -5.838443756103516,
-    id: "b50ac17a-6ea3-2914-8e2a-19b2c32ccb8d",
-  },
-  {
-    x: 1,
-    y: -1.600000023841858,
-    z: -5.838443756103516,
-    id: "b50ac17a-6ea3-4924-8e2a-19b2c32ccb8d",
-  },
-];
+const store = [];
 
 wss.on("connection", function connection(ws) {
   ws.id = uuid();
