@@ -16,11 +16,34 @@ const server = express()
 
 const wss = new WebSocketServer({ server });
 
+const store = [
+  {
+    x: -1,
+    y: -1.600000023841858,
+    z: -5.838443756103516,
+    id: "b50ac17a-6ea3-4914-8e2a-19b2c32ccb8d",
+  },
+  {
+    x: 0,
+    y: -1.600000023841858,
+    z: -5.838443756103516,
+    id: "b50ac17a-6ea3-2914-8e2a-19b2c32ccb8d",
+  },
+  {
+    x: 1,
+    y: -1.600000023841858,
+    z: -5.838443756103516,
+    id: "b50ac17a-6ea3-4924-8e2a-19b2c32ccb8d",
+  },
+];
+
 wss.on("connection", function connection(ws) {
   ws.id = uuid();
   console.log("client connected");
+  store.forEach((obj) => ws.send(obj));
 
   ws.on("message", function message(info, isBinary) {
+    store.push(info.toString("utf8"));
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         console.log("sending to clients: ", info.toString("utf8"));
