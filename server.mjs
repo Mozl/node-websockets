@@ -22,7 +22,6 @@ wss.on("connection", function connection(ws) {
 
   ws.on("message", function message(info, isBinary) {
     wss.clients.forEach(function each(client) {
-      console.log("message received from: ", client);
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         console.log("sending to clients: ", info.toString("utf8"));
         client.send(info.toString("utf8"), { binary: isBinary });
