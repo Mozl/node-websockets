@@ -14,7 +14,7 @@ const server = express()
 
 const wss = new WebSocketServer({ server });
 
-const store = [];
+let store = [];
 
 wss.on("connection", function connection(ws) {
   ws.id = uuid();
@@ -24,11 +24,18 @@ wss.on("connection", function connection(ws) {
   });
 
   ws.on("message", function message(info, isBinary) {
-    store.push(info.toString("utf8"));
+    info = info.toString("utf8");
+    console.log("info: ", info);
+    if (info.includes("clear")) {
+      console.log("clearing store");
+      store = [];
+      return;
+    }
+    store.push(info);
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
-        console.log("sending to clients: ", info.toString("utf8"));
-        client.send(info.toString("utf8"), { binary: isBinary });
+        console.log("sending to clients: ", info);
+        client.send(info, { binary: isBinary });
       }
     });
   });
