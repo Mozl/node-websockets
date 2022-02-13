@@ -8,8 +8,6 @@ const __dirname = path.resolve();
 const PORT = process.env.PORT || 8080;
 const INDEX = "/index.html";
 
-console.log("before express.use()");
-
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
@@ -20,11 +18,13 @@ const store = [];
 
 wss.on("connection", function connection(ws) {
   ws.id = uuid();
-  console.log("client connected");
-  store.forEach((obj) => ws.send(obj.toString("utf8")));
+  console.log("client connected", ws.id);
+  store.forEach((obj) => {
+    ws.send(obj);
+  });
 
   ws.on("message", function message(info, isBinary) {
-    store.push(info);
+    store.push(info.toString("utf8"));
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         console.log("sending to clients: ", info.toString("utf8"));
